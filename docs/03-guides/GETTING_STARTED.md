@@ -50,7 +50,7 @@ heroku ps:scale worker=1
 **자격증명이 하드코딩**되어 있다. 이는 다음과 같이 조치해야 한다:
 
 1. 노출된 토큰을 **즉시 폐기(revoke)** — [github.com/settings/tokens](https://github.com/settings/tokens)
-2. 코드의 하드코딩 값을 제거하고 **환경변수**로 전환 (예: `os.environ.get('MODEL_FETCH_TOKEN')`)
+2. 코드의 하드코딩 값을 제거하고 **환경변수**로 전환 (예: `os.environ.get('GITHUB_TOKEN')`)
 3. 모델이 **공개 저장소**에 있다면 토큰 없이 받도록 변경, 비공개라면 배포 환경의 시크릿으로 주입
 4. (선택) 커밋 히스토리에서 토큰 흔적 정리
 

@@ -20,28 +20,27 @@ import os
 
 TOKEN = os.environ.get('TOKEN')
 
-# GitHub Personal Access Token (본인의 토큰으로 대체해야 합니다)
-access_token = '***REMOVED_SECRET***'
+# GitHub Personal Access Token — 환경변수에서 로드 (절대 하드코딩 금지)
+# 모델/데이터는 아래 공개 raw URL에서 받으므로 토큰은 선택사항(없어도 동작)
+access_token = os.environ.get('GITHUB_TOKEN')
 
-# GitHub API 엔드포인트 및 private 레포지토리의 소유자와 레포지토리 이름을 지정합니다.
+# GitHub API 엔드포인트 및 레포지토리 소유자/이름 지정
 owner = 'CloudNaaam'
 repo = 'Tonkatsu'
 
 # GitHub API URL 생성
 url = f'https://api.github.com/repos/{owner}/{repo}'
 
-# HTTP 요청 헤더 설정 (Personal Access Token을 사용한 인증)
-headers = {
-    'Authorization': f'token {access_token}'
-}
+# 토큰이 있을 때만 인증 헤더 구성 (private 레포 접근 확인용)
+headers = {'Authorization': f'token {access_token}'} if access_token else {}
 
-# GitHub API를 사용하여 private 레포지토리에 접근 및 인증
+# GitHub API로 레포지토리 접근 확인 (실패해도 공개 raw로 모델을 받으므로 치명적 아님)
 response = requests.get(url, headers=headers)
 
 if response.status_code == 200:
-    print("GitHub private 레포지토리에 성공적으로 접근 및 인증되었습니다.")
+    print("GitHub 레포지토리에 성공적으로 접근했습니다.")
 else:
-    print("GitHub private 레포지토리에 접근 및 인증에 실패했습니다.")
+    print(f"GitHub 레포지토리 접근 확인 실패 (status={response.status_code}). 모델은 공개 raw에서 받습니다.")
 
 AI_url = 'https://raw.githubusercontent.com/CloudNaaam/Tonkatsu/master/모델 학습/rf_final.pickle'
 Alexa_url = 'https://raw.githubusercontent.com/CloudNaaam/Tonkatsu/master/모델 학습/cloudflare-radar-domains-top-100000-20230821-20230828 - 복사본.csv'
